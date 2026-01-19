@@ -111,18 +111,62 @@ model = init_chat_model(           # SAME - **ONLY BRACKETS CHANGE**
 )
 
 #########################################################################################################################################
+######### MESSAGES
+
+1️⃣ "Message prompts"
+from langchain.messages import SystemMessage, HumanMessage, AIMessage
+messages = [
+    SystemMessage("You are a poetry expert"),
+    HumanMessage("Write a haiku about spring"),
+    AIMessage("Cherry blossoms bloom...")
+]
+response = model.invoke(messages)
+
+2️⃣ "System message"
+Docs Location: Messages page → System message → Detailed persona
+
+system_msg = SystemMessage("""
+You are senior AI/ML engineer at AWS.
+- Always code examples
+- Step-by-step reasoning
+- Production context only
+""")
+messages = [system_msg, HumanMessage("Deploy chatbot")]
+response = model.invoke(messages)
+
+
+3️⃣ "Streaming and chunks"
+Docs Location: Messages page → Streaming and chunks
+
+messages = [SystemMessage("MLOps expert"), HumanMessage("Monitor drift")]
+for chunk in model.stream(messages):
+    print(chunk.content, end="", flush=True)
+
+
+4️⃣ "AI message"
+Docs Location: Messages page → AI message → Manually create
+
+# Session memory from database
+ai_msg = AIMessage("Use SageMaker + Kubeflow for deployment")
+messages = [
+    SystemMessage("MLOps"),
+    HumanMessage("Deploy LangChain?"),
+    ai_msg,  # Previous response
+    HumanMessage("Docker setup?")
+]
+response = model.invoke(messages)
 
 
 
+📌 YOUR DOCS BOOKMARK SYSTEM
+
+Docs Page → Ctrl+F "Message prompts" → Copy code #1
+Docs Page → Ctrl+F "System message" → Copy code #2  
+Docs Page → Ctrl+F "Streaming" → Copy code #3
+Docs Page → Ctrl+F "AI message" → Copy code #4
 
 
-
-
-
-
-
-
-
+#########################################################################################################################################
 
 
 
