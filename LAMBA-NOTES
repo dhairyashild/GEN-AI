@@ -1,0 +1,19 @@
+LANGCHAIN = FRAMEWORK WHO BUILT PYTHON CLASSESS FOR AI OPERATOION
+
+VSCODE ---> OPENFOLDER ---- TERMINAL--->
+pip install uv
+uv init
+uv sync
+uv add langchain
+
+                                           BE POLITE   === SYSTEM MESSAGE
+rahul USER message    --------------------    AI MESSAAGE =AI MESSAGE
+
+# CALL ALL VALUES IN  .env FILE BY JUST 3 LINES BELOW     - NO NEED OF PYTHON-DECOUPLE & CONFIG
+import os
+from load_dotenv import load_dotenv 
+load_dotenv()
+
+if os.environ.get("HUGGINGFACEHUB_API_TOKEN"):
+    print("present")
+---o/p---->present
