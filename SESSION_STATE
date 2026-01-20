@@ -1,0 +1,19 @@
+Session state remembers data between that session only Streamlit app reruns.
+1-Saves data when app refreshes in same browser tab.
+2-Like a dict: st.session_state['name'] = 'value'.
+3-Check first: if 'count' not in st.session_state: count = 0.
+
+import streamlit as st
+
+st.session_state.name= "dhairyA"
+st.session_state["SURNAME"]="DESAI"
+st.session_state.get("age","25")
+
+st.write(
+st.session_state.name,
+st.session_state["SURNAME"],
+st.session_state.get("age","25")
+)
+
+--------------  O/P  --------->
+dhairyA DESAI 25
