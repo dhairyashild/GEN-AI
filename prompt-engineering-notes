@@ -1,0 +1,51 @@
+What is Prompt Engineering?
+-------Skill to communicate with AI models to get desired o/p
+
+
+Zero-Shot Prompting
+No examples given, direct request
+Example: "Explain machine learning in simple terms"
+
+Few-Shot Prompting
+Provide examples for pattern learning
+Example: "Cat→Meow, Dog→Bark, Cow→Moo, Lion→"
+
+Chain-of-Thought=reasoning
+Ask for step-by-step reasoning
+Example: "If 2x=10, find x. Show your work."
+
+Persona Prompting
+Assign specific expert role
+Example: "Act as a senior software engineer"
+
+Format Specification
+Define exact output structure
+Example: "Provide answer as bullet points"
+
+----------------------------------------------
+
+TCRIE + COF
+
+T = Task (Goal)
+C = Context (Background)
+R = Role (Persona)
+I = Instructions (Constraints)
+E = Examples (Patterns)
+COF (Always add):
+C = Chain-of-thought (Reasoning)
+O = Output format (Structure)
+F = Feedback loop (Iterate)
+----------------------------------------------
+
+--------------------- USE RTICE METHOD INNSTAED OF TCREI LIKE BELOW -------------------------
+Sequence flexible - logic matters more
+Better order: RTICE  + CO
+Role first (sets expertise)
+Task second (defines goal)
+Instructions third (constraints)
+Context fourth (background)
+Examples last (pattern)
+Chain-of-thought: [Show reasoning]
+Output: [Specific format]
+
+Most important: Role + Task together start
