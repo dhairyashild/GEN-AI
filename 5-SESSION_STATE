@@ -98,7 +98,9 @@ st.write(st.session_state.items())
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 
-
+Q so they ask to see what user input is so session state need for that only but llm automatically remmebers 
+user ip for that not need streamlit yes or no ? short ans for next all like this   ---------->
+Yes - Session state shows user inputs in UI/chat display; LLM remembers via message history automatically
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 
