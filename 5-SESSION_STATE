@@ -184,12 +184,36 @@ but st.chat_message("assistant").         ==   shows assistent symbol and questi
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
-
+# This is the "Developer's print" for Streamlit
+st.write(st.session_state)
 
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
+#######  Your 5 Simple Rules to Remember ✋
 
+
+Rule 1: Always CHECK before using
+if "variable_name" not in st.session_state:
+    st.session_state.variable_name = "starting_value"
+👆 ALWAYS do this FIRST for every variable!
+
+Rule 2: Store like a Dictionary -- both ways useful but i like 2nd method .name
+st.session_state["name"] = "John"  # Method 1
+st.session_state.name = "John"     # Method 2
+Both work! I'll use Method 2 (dot) as it's simpler.
+
+Rule 3: Get values like a Dictionary
+current_name = st.session_state.name
+
+Rule 4: Update when inputs change
+# User types in text box
+user_input = st.text_input("Type here")
+if user_input != st.session_state.my_text:
+    st.session_state.my_text = user_input  # Update!
+
+Rule 5: Display from Session State
+st.write(f"Value stored: {st.session_state.my_text}")
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
