@@ -84,33 +84,26 @@ uv run jupyter notebook
 # - For PATH issues: which python should show .venv path
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# सारांश (SUMMARY) NO NEED TO READ BELOW ALL JUST 1 LINE OK      -- UV AND LIB AND FUNCTION MEANTING  ====from [LIBRARY_IN_NEUROVED] import [FUNCTION] 
+--------------------------------------------------------------------------------------------------------------
 # PROJECT CONTEXT: You are working in ~/OneDrive/Desktop/NEUROVED-CODES
 
 # 1. WHERE PYTHON LOOKS
-# Why: 'uv' stores your AI tools in a hidden folder inside your current project.
-# Path: ~/OneDrive/Desktop/NEUROVED-CODES/.venv/lib/site-packages/
-
-# 2. THE ANALOGY
-# 'from' = the specific folder inside .venv | 'import' = the tool inside that folder.
-
-from openai import OpenAI # Go to 'NEUROVED-CODES/.venv/...' and grab the 'OpenAI' tool.
-from transformers import pipeline # Go to 'NEUROVED-CODES/.venv/...' and grab the 'pipeline' tool.
-from main import my_logic # Go to your local 'main.py' file and grab your own code.
+# Why: 'uv' stores your AI tools in hidden folder inside current project.  === Path: ~/OneDrive/Desktop/NEUROVED-CODES/.venv/lib/site-packages/
 
 # 3. HOW IT WORKS IN YOUR TERMINAL
 # Why: 'uv run' tells Python to look ONLY in your 'NEUROVED-CODES' environment.
 uv run python main.py # Executes your file using the tools found in your local .venv.
 
-# 4. SUMMARY
+# from [LIBRARY] import [FUNCTION]  ==== Access the (Folder) to use the (Reusable Code).
+
+from openai import OpenAI # Go to 'NEUROVED-CODES/.venv/...' and grab the 'OpenAI' tool.
+from transformers import pipeline # Go to 'NEUROVED-CODES/.venv/...' and grab the 'pipeline' tool.
+
 # from [LIBRARY_IN_NEUROVED] import [FUNCTION] # Keeps your 'main.py' fast and clean.
-
 # 1. LIBRARY   ==== folder containing many files of pre-written code for a specific topic.
-# Why: So you don't have to write complex AI math from scratch.
-
 # 2. FUNCTION (The Reusable Tool) ===specific block of code inside a library designed to perform one task.
-# Why: To run the same action (like "Generate Text") many times by just calling its name.
 
-                                                                                                                    # सारांश (SUMMARY)      # from [LIBRARY] import [FUNCTION]  ==== Access the (Folder) to use the (Reusable Code).
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
