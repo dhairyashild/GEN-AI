@@ -39,50 +39,69 @@ GROQ
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# For Git Bash users - Complete UV setup commands:
+# ──────────────────────────────────────────────────────────────
+#  UV + GIT BASH (WINDOWS) - PERFECT CHEAT SHEET 🚀
+# ──────────────────────────────────────────────────────────────
 
-# 1. Install UV in Git Bash       ####  curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# 2. Add UV to PATH in Git Bash (IMPORTANT!)
-echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
-
-# 3. Check UV installation
+# 1. INSTALL & PATH (Git Bash)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc
 uv --version
 
-# 4. Create project
-mkdir ai-project && cd ai-project
+# 2. NEW PROJECT
+mkdir my-project && cd $_
+uv init        # Creates pyproject.toml
+uv venv        # Creates .venv folder
 
-# 5. Initialize UV project
-uv init
+# 3. ACTIVATE (Git Bash ONLY)
+source .venv/Scripts/activate   # Forward slashes, Scripts NOT bin!
 
-# 6. Create virtual environment
-uv venv
+# 4. INSTALL PACKAGES (auto-saves to pyproject.toml)
+uv add openai langchain torch transformers jupyter pandas numpy
 
-# 7. Activate - Git Bash specific
-source .venv/Scripts/activate  # Git Bash on Windows uses forward slashes
-
-# 8. Install Gen AI packages
-uv add openai langchain transformers torch chromadb
-
-# 9. Install Jupyter for notebooks
-uv add jupyter ipykernel pandas numpy matplotlib
-
-# 10. Register kernel
-uv run ipython kernel install --user --name="ai-env"
-
-# 11. Test
-uv run python -c "import torch; print(f'PyTorch: {torch.__version__}')"
-
-# 12. Start Jupyter
+# 5. JUPYTER SETUP
+uv run ipython kernel install --user --name="myenv"
 uv run jupyter notebook
 
-# Git Bash TIPS:
-# - Use forward slashes (/) not backslashes (\)
-# - Python scripts in .venv/Scripts/ not .venv/bin/
-# - If activation fails: source .venv/Scripts/activate
-# - For PATH issues: which python should show .venv path
+# 6. RUN (without activation - pro move)
+uv run python script.py
 
+# 7. COPY PROJECT TO NEW FOLDER 🔑
+#    Step 1: Copy ONLY these two files:
+#    - pyproject.toml
+#    - uv.lock
+#    Step 2: In new folder:
+uv sync        # Recreates EXACT environment (versions locked!)
+source .venv/Scripts/activate
+
+# 8. USEFUL COMMANDS
+uv add package          # Install + add to pyproject.toml
+uv remove package       # Uninstall + remove from toml
+uv lock                 # Update uv.lock only
+uv tree                 # Show dependency tree
+uv pip list             # List installed packages
+
+# ──────────────────────────────────────────────────────────────
+# GOLDEN RULES:
+# • Windows/Git Bash = source .venv/Scripts/activate
+# • Mac/Linux = source .venv/bin/activate
+# • uv sync = "Clone this environment" (needs lock + toml)
+# • uv run = "Run without thinking about activation"
+# ──────────────────────────────────────────────────────────────
+##################################################################
+# --- UV ENVIRONMENT: COPY TO ANOTHER FOLDER ---
+
+# 1. PREP: Copy 'pyproject.toml' (and 'uv.lock') to the new project folder #
+# 2. SYNC: Run 'uv sync' (This builds a fresh .venv based on the copied files) #
+# 3. ACTIVATE: 
+#    - Windows: source .venv/Scripts/activate #
+#    - Mac/Linux: source .venv/bin/activate #
+
+# --- QUICK UV CHEAT SHEET ---
+# uv init          -> Start new project #
+# uv add <package> -> Install & save to toml #
+# uv run <file.py> -> Run script without activating venv #
+# uv lock          -> Refresh the lockfile only #
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # सारांश (SUMMARY) NO NEED TO READ BELOW ALL JUST 1 LINE OK      -- UV AND LIB AND FUNCTION MEANTING  ====from [LIBRARY_IN_NEUROVED] import [FUNCTION] 
 --------------------------------------------------------------------------------------------------------------
@@ -329,21 +348,96 @@ option2 =st.selectbox("select one of the options:", ["audio", "video", "image","
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------- lecture 10 ------------------------------------------------------
+#  both works same just writing area size chages  (area > input)
+st.text_input(       )            ------it gives small area to write
+st.text_area(       )           ------it gives large area to write
+
+Multimodal == Model that processes MULTIPLE data types simultaneously text + all other (image + audio + video ...).
+              But mahjority llm support text based i/p only so llm which suppot img/audio ...called as multimodel
+
+link for multimodal code---            
+https://docs.langchain.com/oss/python/langchain/messages#multimod
+
+On this page(right side sidebar)----->multimodal  --- code block has below 4 types in it
+Image input
+PDF document input
+Audio input
+Video input
 
 
+# 1. THE PART YOU WRITE (Custom Helper)
+import base64, mimetypes #
 
+def encode_image(path): #
+    mime, _ = mimetypes.guess_type(path) #
+    with open(path, "rb") as f: #
+        b64_str = base64.b64encode(f.read()).decode('utf-8') #
+    return b64_str, mime #
 
+# 2. THE PART YOU GET FROM THE SITE (LangChain Multimodal Schema)
+# Find in: "Multimodal" -> "From base64 data"
+img_b64, img_mime = encode_image("NEUROVED.jpg") #
 
+message = {
+    "role": "user",
+    "content": [
+        {"type": "text", "text": "Describe the content of this image."},
+        {
+            "type": "image",
+            "base64": img_b64,
+            "mime_type": img_mime,
+        },
+    ]
+}
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------- lecture 11------------------------------------------------------
+# 1. CHAT INPUT WITH FILES
+st.chat_input("Say something", accept_file=True)  # Single file
+st.chat_input("Upload", accept_file="multiple")   # Multiple files
+
+# 2. FILE UPLOADER (classic)
+st.file_uploader("Upload", type=['png','pdf','csv'])  # Single
+st.file_uploader("Upload", accept_multiple_files=True)  # Multiple
+
+# 1. CHAT INPUT - DIRECTORY UPLOAD
+st.chat_input("Upload folder", accept_file="directory")  # Upload entire folder!
+# 2. MULTIPLE FILES + DIRECTORY
+st.chat_input("Upload", accept_file=["multiple", "directory"])  # Both allowed
+
+
+-IF  we change anything in streamlit , whole program rus again
+
+-SIMPLE EXAMPLE ===
+
+st.title("Chat App")
+prompt = st.chat_input("Say Something")
+
+if prompt:
+    with st.chat_message("user", avatar="🧑"):
+        st.write(prompt)
+    
+    with st.chat_message("ai", avatar="🤖"):
+        output = llm.invoke(prompt)
+        st.markdown(output.content)
+
+
+
+
+################################  SEE SESSIONSTAE AFTER 40 MINUTES AGAIN
+
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------             VIDEO 12                 ----------------------------------------------------------------------------------------------------------------------------------------------
+# LLM LIMITATIONS → RAG SOLVES ✅
+# 1. HIGH GPU TRAINING COST → NO TRAINING NEEDED! Just retrieve
+# 2. STATIC KNOWLEDGE → FETCH LIVE/CURRENT DATA from vector DB
+# 3. SMALL CONTEXT WINDOW → ONLY RELEVANT chunks injected
+# 4. HIGH COST (prompt stuffing) → CHEAPER, fewer tokens
+# 5. HALLUCINATIONS → GROUNDED in retrieved facts
+# 6. PRIVATE DATA → SECURE, don't fine-tune on sensitive data
 
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
+-- RAG DIAGRAM EXPLAINED
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
