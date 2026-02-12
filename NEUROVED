@@ -104,6 +104,240 @@ from transformers import pipeline # Go to 'NEUROVED-CODES/.venv/...' and grab th
 # 1. LIBRARY   ==== folder containing many files of pre-written code for a specific topic.
 # 2. FUNCTION (The Reusable Tool) ===specific block of code inside a library designed to perform one task.
 
+---------------------------------------------------------------------------------------------------------------------------------------------
+temperature
+Temperature in machine learning controls randomness in AI responses: 0.0 = deterministic, 2.0 = highly creative. [Your Llama model uses 0.7]
+Max Tokens: The hard limit set on the number of tokens (words or parts of words) the model can generate in a single response.
+Context Window: The maximum amount of text (input plus output) that a model can "remember" and process at one time.
+Top-P (Nucleus Sampling): A technique that limits the model’s choices to a subset of tokens whose cumulative probability reaches a specific threshold.
+Top-K: A sampling method that restricts the model to choosing only from the $k$ most likely next tokens.
+
+gpt 3.5 = 4096 tokens 
+gpt5 token window = 128k tokens 
+llama2 =4096 tokens 
+gemini =1 million token [have largst token no.]
+
+--------------------------------------------------------------------------------------------------------------
+1 token = 4 char [char includes words , symbol@ and space]
+llm creates one word which has highest probabilty at a time in output , 
+llm=dictionary of vocabs consist of general info 
+temprature = decides randomness of answer
+- low temp -> low creativity , high temp -> high creativity 
+- same answ for same question again  --> t low -> 0-0.2 -> for factual answer --> we kp low like medical 
+- high temp --> movie ,poem , essay , 
+- mat -- 0.9 [probability]
+  gate -- 0.02
+  sofa -- 0.03
+temp=2
+new_probability_of_mat_if i change temperature to 2 = 0.9/[0.9/2 + 0.02/2  + 0.03/2]
+new_probability =[logits/temperature]*softmax
+when we set t low prob gets increased 
+Max tokens: Maximum number of tokens (words/characters) the AI can generate in a single response. [Your model: max_new_tokens=512]
+top-p  -> p-> prob-> Top-p: Picks tokens from smallest group whose total probability reaches p (we provide 90%-95%  ).
+top-k   -> Top-k: Limits sampling to exactly k most probable tokens (e.g., top 50), ignores all others.
+for below example if we give k=4 thn it will select first 4 tokens only and neglect next
+k=50
+
+the       0.3
+capital   0.2
+of        0.1
+india     0.1   
+  top-p = 0.7  top-p is 0.7 then above 4 words will b given because they tootal 0.7 prob and remove low prob 
+               words 
+is        0.1   dis
+new       0.1   dis
+delhi     0.05  discards    
+kolkatta  0.05  dis
+raipur    0.05  dis
+bhopal    0.05  dis
+total     1     
+
+SUMMARY 
+temp                             top-p                    top-k
+controls randomness            p=0.9-0.95                k=50 it will select top 50 words geenerated from llm vocab 
+low temp -> low creativity ,    effect creativity         
+high temp -> high creativity 
+T = 0-0.2 FActual
+    0.4-1 balanced creativity
+    1<    high creat
+
+-  we mostly used 1)temp  , 2) maxtokens to control output
+
+langchain
+framwork to create llm based apps
+langchain and llamaindex same but in llama index small pay required 
+-  langchain llm based app
+-  langgrapph agentic ai
+-  human mssage  =anything we ask to llm
+-  system messag =role w assign to llm 
+-  ai msg        =output msg 
+❌ WITHOUT LangChain (6 lines)
+from huggingface_hub import InferenceClient
+client = InferenceClient(token="hf_xxx")
+response = client.text_generation("Hello!", model="meta-llama/Llama-3.1-8B-Instruct")
+print(response)
+
+✅ WITH LangChain (10 lines - Your chatbot)
+from langchain_huggingface import HuggingFaceEndpoint
+llm = HuggingFaceEndpoint(repo_id="meta-llama/Llama-3.1-8B-Instruct")
+model = ChatHuggingFace(llm=llm)
+response = model.invoke("Hello!")
+print(response.content)
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------- lecture 6 ------------------------------------------------------
+- in messages first it runs system message then work on human message 
+-  HumanMessage  =anything we ask to llm
+-  SystemMessage =role w assign to llm -> if we give role as coding expert and ask question on heart attack [medical question] then LLM will still answer the medical question but frame it through a coding lens
+-  AIMessage Purpose:
+Primary: Stores AI model responses in conversation history
+Secondary: Can be used in few-shot examples (with example=True)
+("system","act as helpful assistant and translate {ip_language} into {op_language}" ),      ## REMEMBER   (   "system" , "           "  )   OR  SystemMessagePromptTemplate.from_template("act as helpful assistant...")  ==BOTH WORKS SAME
+("user","{text}")                                                                           ## REMEMBER   (   "user"   , "           "  )   OR  HumanMessagePromptTemplate.from_template("act as helpful assistant...")   ==BOTH WORKS SAME
+])
+
+# CORRECT CODE: Chain setup using LangChain and ChatOpenAI
+
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+
+# 1. TEMPLATE: Define the logic and variables.
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are a helpful assistant that translates {input_language} to {output_language}"),
+    ("human", "{input}")
+])
+
+# 2. CHAIN: Combine the prompt and the model using the pipe (|) operator.
+model = ChatOpenAI(model="gpt-4o")
+chain = prompt | model
+
+# 3. INVOKE: Send data and get the result.
+output = chain.invoke({                   # chain.invoke la format lagat nahi -> ready_prompt.format la lagate 
+    "input_language": "English", 
+    "output_language": "Odia", 
+    "input": "I love programming"
+})
+print(output.content) # Result: ମୁଁ ପ୍ରୋଗ୍ରାମିଂକୁ ଭଲ ପାଏ |
+
+transaction list example :
+
+first give ur basic promt and ask gpt to refine ur prompt because o/p depends on it.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------- lecture 7 ------------------------------------------------------
+chatPromptTemplate consist of list of tuples
+chatPromptTemplate=[(),()]
+output.response_metadata = no.of tokens + other info
+
+- SystemMessage =role w assign to llm -> if we give role as coding expert and ask question on heart attack [medical question] then LLM will still answer the medical question but frame it through a coding lens
+- chain.invoke("Tata")
+- chain.invoke("stock":"Tata")
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------- lecture 8 ------------------------------------------------------
+-  if u dont give human message and system mssage and ai message then use
+model.invoke("what is python")
+
+-   if u ai message then use
+msg=[("humanmessage","what is python")
+("systemmessage","act as ai engineer")]
+model.invoke(msg)
+-  when you want to input variable
+message = ['system', You are experienced (role). Answer all the query related to that only else say sorry,
+("human', 'this is the (query)')]
+
+types
+1- 0 shot
+   2.1 Zero-Shot Prompting
+   What it is: Asking the Al to perform a task without providing any examples.
+   When to use: For straightforward tasks where the Al already understands what you want.   
+   sys_msg = "you are experince reviwe critic, based on the review tell weather the product belong to which categories 1.good, 2.bad and 3. ok" 
+   human_msg="These is the review: (review)"
+   msg = [('system', sys_msg), ('human', human_msg)]
+   template =ChatPromptTemplate(msg)
+
+2- one shot prompting
+   What it is: Providing exactly one example to show the Al what you want.
+   When to use: When you need to demonstrate a specific format or style.
+   #One-shot example: Product description generation
+   one_shot_template Chat PromptTemplate([
+   "system", "You generate product name and parameters for e-commerce review message"),
+   'human", "I've been using the Samsung Galaxy S24 Ultra (12GB RAM 256GB Storage) for over a month now, and it has exceeded my expectations in almost every area.").
+   ai", "product name: Samsung Galaxy 524 Ultra, parametrs:12GB RAM 256GB Storage").
+   ['human", "this is the e-commerce review message: (rev_msg}")])
+   chain one shot template | llm
+-  *** in this we use 2 human message - first human mssage is for giving 1 example and other  for human input ***
+
+2- few shot
+   giving more than 1 ex is better but it increases [1] token [2] response time from llm
+
+
+3- 2 shot
+
+
+4- chain of thought
+   2.4 Chain-of-Thought Prompting
+   What it is: Asking the Al to think step-by-step and show its reasoning.
+   When to use: For complex problems that require logical reasoning or multi-step solutions.
+   Chain-of-thought example: Math word problems
+   cot_template ChatPromptTemplate.from messages(
+"system", "You solve math problems step by step. Always show your reasoning clearly.").
+"human", """Let's work through this step by step.
+Problem: [problem] Please think through this step by step:
+1. What information do we have?
+2. What do we need to find?
+3. What steps do we need to take?
+4. Show the calculations
+5. State the final answer
+   Test with a word problem
+math problem = "A store sells books for $15 each. If they offer a 20% discount for buying 5 or more books, how much would it cost to buy 8 books?
+
+5- tree of thought
+
+6- 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------- lecture 9 ------------------------------------------------------
+Stream lit
+- To create web app
+- to show POc (proof of Concept)
+- automatically create html in background 
+- 
+uv add streamlit
+- setting run on save -> if u change in main.py then automaticaaly changes will reflect in ui
+- st.set_page_config("first_app")  
+- st.text_area("This app is about chat and asking question about any topic")
+
+img = st.file_uploader("Upload any Image")
+if img:
+st.image(ing)    #st.audio
+or st.video
+
+file_name=st.text_input("Enter the url
+if file name:
+click =st.button("Press Enter")
+if click:
+st.video(file_name)
+
+st.sidebar.title("About")
+options =st.sidebar.radio("select one of the options:", ["audio", "video", "image"])
+
+options =st.radio("select one of the options:", ["audio", "video", "image"])
+
+option2 =st.selectbox("select one of the options:", ["audio", "video", "image","pdf"])
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------- lecture 10 ------------------------------------------------------
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------- lecture 11------------------------------------------------------
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -165,28 +399,5 @@ from transformers import pipeline # Go to 'NEUROVED-CODES/.venv/...' and grab th
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 
