@@ -451,13 +451,96 @@ if prompt:
 -- RAG DIAGRAM EXPLAINED
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------                  video 13          -----------------------------------------------------------------------------
+RAG STEPS===
+
+1- DOCUMENT LOADER 
+WRAPPPER IS LIBRARY GIVEN BY LANGCHAIN SO COMMOM COE TO LOAD ALL DOCS WITH LANG
+DOCUMENT( "PAGE INFO",
+           "METADATA",
+           "ID (OPTIONAL)" )
 
 
+# UV ADD 
+uv add langchain_community
+Added to TOML: Yes. It automatically updates your --->     pyproject.toml   +   uv.lock.
+
+If you are in the folder but don't see (.venv) at the start of your line, it means the environment is sleeping. 
+You are in the right place, but your terminal is still using the "global" Python.
+
+Here is the shortest way to wake it up in MINGW64 / Git Bash:
+source .venv/Scripts/activate              /   . .venv/Scripts/activate     --- BOTH SAME CHECK
+
+If you still don't see the (.venv) text (sometimes the display is buggy), run this:
+which python
+Success: It shows a path inside your NEUROVED-CODES folder (UR CRRENT FOLDER) .
+Failure: It shows a path like /c/Users/Admin/AppData/Local/Programs/Python....
+######################################################################
+# 1= LOAD PDF          ===  link
+
+https://docs.langchain.com/oss/python/integrations/document_loaders/pypdfloader
+1- installation command to get lib
+2- initialization code to get below code
+
+from langchain_community.document_loaders import PyPDFLoader
+# Your existing code below
+file_path = "C:/Users/dhair/OneDrive/Desktop/NEUROVED-CODES/shubhamlondhe_ansible_notes.pdf"    # my pc path
+loader = PyPDFLoader(file_path)
+# 2. Extract Data
+docs = loader.load() # Execute loading into memory
+#   BELOW MY COMMANDS TO GET INF
+len(docs)
+docs[0]
+# 3. Access Content
+print(docs[0].page_content) # Print first page text
+print(docs[0].metadata) # Print file source and page number
+print(docs)
+######################################################################
+# LOAD WEB SCRAPING --- 1ST 3 LINES FOR PYDANTIC WARNING IF NOT IVE ITS OK.
+import os, warnings                                                           ### MY CODE = 3#
+# MUST BE AT TOP: Hides the Python 3.14 / Pydantic V1 warning #
+warnings.filterwarnings("ignore")                                                      ###                              
+
+# MUST BE BEFORE LOADER: Identifies you to the website to prevent being blocked #  
+os.environ["USER_AGENT"] = "Mozilla/5.0"         ###All modern browser (including Chrome) uses "Mozilla" in its ID string to ensure compatibility with old websites ,otherwise block them.
+
+# Import only after the warning-ignore line above is set
+from langchain_community.document_loaders import WebBaseLoader
+
+loader = WebBaseLoader("https://python.langchain.com/docs/introduction/")
+
+docs = loader.load()                                       ###  
+
+# Use print() to see results in a .py script              ###
+print(f"Total Pages: {len(docs)}")                          ###  
+print(f"Snippet: {docs[0].page_content[:150]}")                         ###  
+
+####################################   INTRVIEW POOINTS ON THIS  ##################################
+dada loading --- include cleaning (crawlAI library need for cleaning)
+ IN DOCUMENT LOADER----UNSTRUCUTRED ---FOR GETTING DFWITH IMAGE/TABLES
+AUDIO LOADING NEED TO CONVERT SPEECH TO TEXT THEN ONLY LLM CAN WORK ON IT
+LLM WE GET HUNGGINGFACE THEY NOT STOR E MY DAT BUT CHATGPT STORE MY DATA
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ PyMuPDFLoader--- SO USE 
 
+# --- INDUSTRY COMPARISON ---
+--------------------------------------------------------------------------
+# Feature    | PyMuPDFLoader (Pro)          | PyPDFLoader (Basic)
+--------------------------------------------------------------------------
+# Speed      | 10x Faster (C++ engine)      | Slower (Pure Python)
+# Layout     | Best (Tables/Columns)        | Poor (Scrambles columns)
+# Metadata   | Rich (Author, Title, Tags)   | Basic (Page # only)
+# Library    | pip install pymupdf          | pip install pypdf
+--------------------------------------------------------------------------
+
+# uv add  PyMuPDFLoader
+from langchain_community.document_loaders import PyMuPDFLoader
+# 1. Setup (Requires: uv add pymupdf)
+loader = PyMuPDFLoader("ansible_notes.pdf") # Identify PDF #
+# 2. Load
+docs = loader.load() # Fast extraction of text and metadata #
+# 3. Use
+print(docs[0].page_content) # Access page 1 text #
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
