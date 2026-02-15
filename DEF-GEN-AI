@@ -1,0 +1,43 @@
+#  Unsloth: Open-source library for 2x faster LLM fine-tuning with 70% less VRAM.​
+#  FastLanguageModel ( LOADER + TOKENIZER) : Unsloth's loader that loads 4-bit models + tokenizer for QLoRA training.
+#  Torch (PyTorch):  Open-source deep learning framework for building/training neural networks (GPU accelerated).
+
+# model: The actual AI brain that learns patterns
+# tokenizer: The translator that converts text ↔ numbers for the brain
+--------------------------------------------------------------------------------------------------
+NOTES OF FOLDER 0N GIT = Transformers Explained | Simple Explanation of Transformers-CODEBASICS == https://github.com/dhairyashild/FINE-TUNNING/blob/main/Transformers%20Explained%20%7C%20Simple%20Explanation%20of%20Transformers-CODEBASICS
+
+
+Transformer: Neural network processing all words in parallel using self-attention to understand context/relationships.
+# TRANSFORMER: Input → Token Embeddings (word meanings) + Positional Embeddings (word positions) → Multi-Head Attention → Feed-Forward → Output
+1- Word Embedding: Words → numbers capturing meaning/similarity | dim=300
+Contextual Embedding: Dynamic word vectors change by sentence context |  (SAME WORD BUT DIFFERENT MEAN AS PER WHERE IT USED)
+Extra: "bank" (river) ≠ "bank" (money) → same word, different vectors
+# TRANSFORMER ENCODER: A neural network component that processes input data using self-attention to understand context and relationships between elements in a sequence.= BERT HAVE ONLY ENCODER
+# DECODER: A neural network that creates output sequences by looking at encoder outputs and focusing on its own previous Tokens.EG= GPT HAVE DECODER
+1= STATIC EMBEDING OF TOEKN ---> POSITIONAL EMBEDING BY ADDING SMALL VECTOR INTO MAIN VECTOR SO WORD POSITION DECIDED  BY THIS WHICH WORD 1ST , 2ND ...
+DOSA , DHOKLA , --- ATTENDING WORD INDIAN IN THAT PAR
+
+Q= QUERRY == I WANY QUANTUM COMPUTING BOOK
+K= KEY= RACK IN LIB LIKE ENGINEERING SECTION MADE FIND KAR
+V= VALUE = BOOK 
+
+# Q (Query): Current word asking "what matters?"; K (Key): All words' labels; V (Value): Actual word info; Q•K scores decide which V to focus on.
+# EXAMPLE: In "The cat sat" - For word "sat", Q looks at K of "cat" (label: animal) and gives high score to V of "cat", understanding what sat.
+
+SOFTMAX CONVERT Q * K = INTO PROBABILITY OF WORD
+
+# ATTENTION(Q,K,V): Mechanism where each word asks (Q) others, matches with labels (K), and pulls info (V) from relevant words.
+
+
+# PRETRAINING STEPS: 
+1) Collect massive text 
+2) Choose architecture 
+3) Train tokenizer 
+4) Convert text to tokens 
+5) Feed into model to predict missing words
+--------------------------------------------------------------------------------------------------
+
+
+
+
