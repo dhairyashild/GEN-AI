@@ -19,20 +19,21 @@ THEY GAVE TRANSFORER MODEL = HAVE LARGE MEMORY ALSO WHICH NOT THERE IN RNN + LST
 1)ENCODING  - CONVERT WORD INTO NUMBER --GOOGLE WORK ON IT AND DEVELOP= BERT
 2)DECODING = GENERATE NEW WORDS - OPENAI OF ALTMAN GAVE = 2017=GPT-117 MILLION PARA  
 
-A Transformer =
-is a neural network architecture that understands context by looking at an entire sentence at once, rather than one word at a time.
+A Transformer = 
+DEF ===is a neural network architecture that understands context by looking at an entire sentence at once, rather than one word at a time.
+    -uses Self-Attention to look all words in sentence simultaneously & decide which  are most relevant to eachother
 
 1. The Core Innovation: "Self-Attention"
-In older models (RNNs/LSTMs), the AI read text like a human—one word at a time. 
+-In older models (RNNs/LSTMs), the AI read text like a human—one word at a time. 
 It often "forgot" the beginning of a long sentence by the time it reached the end.
-The Transformer uses Self-Attention to look at every word in a sentence simultaneously and 
+-The Transformer uses Self-Attention to look at every word in a sentence simultaneously and 
 decide which ones are most relevant to each other.
-Example: In the sentence "The animal didn't cross the street because it was too tired,
+-Example: In the sentence "The animal didn't cross the street because it was too tired,
 " Self-Attention helps the model mathematically link the word "it" to "animal" rather than "street."
 
 2. Key Components
-Positional Encoding: Since Transformers process words all at once, they don't naturally know the order of words. This adds a "time stamp" to each word so the model knows its position.
 The Encoder: Reads the input text and converts it into a rich numerical representation (understanding the context).
+Positional Encoding: Since Transformers process words all at once, they don't naturally know the order of words. This adds a "time stamp" to each word so the model knows its position.
 The Decoder: Takes that representation and predicts the next token in the sequence (generating the response).
 Multi-Head Attention: This allows the model to focus on different parts of the sentence for different reasons (e.g., one "head" focuses on grammar, another on the subject-verb relationship).
 -----------------------------------
