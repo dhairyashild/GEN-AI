@@ -558,7 +558,37 @@ print(docs[0].page_content) # Access page 1 text #
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ============================================
+# 9. AGENTIC AI (The "Autonomous" Part)
+# ============================================
+# Agent Loop: Thought -> Action -> Observation -> Final Answer.
+# Tool Use: LLM doesn't "know" the weather; it "calls" a function to get it.
+# ReAct: A framework where the model explains its reasoning before acting.
+# Pydantic: Forces LLM to output valid JSON for software to read.
 
+# 10. DEPLOYMENT & PRODUCTION
+# -----------------------------
+# Quantization: Shrinking a model (e.g., 16-bit to 4-bit) to run on low RAM.
+# LoRA: Efficient fine-tuning by only changing a tiny part of the model.
+# Groq/vLLM: Tools used to make LLM responses extremely fast (High Inference).
+# Hallucination Fix: RAG + Temp 0.0 + Strict System Prompt.
+
+# 11. VERSION CONTROL PRO-TIPS
+# -----------------------------
+# git status: Check what changed.
+# git pull: Get latest team code.
+# git push: Submit your AI features.
+# .gitignore: Essential to hide your .env (API Keys) and .venv folder.
+
+# ============================================
+# QUICK DEFINITION RECALL
+# ============================================
+# 1. Embedding: Text turned into a math vector.
+# 2. Vector DB: Where embeddings are stored for fast search.
+# 3. Chain: A sequence of links (Prompt -> Model -> Parser).
+# 4. Multimodal: Model that "sees" images and "hears" audio.
+# 5. Token Limit: Why long chats eventually "forget" the beginning.
+# ============================================
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
