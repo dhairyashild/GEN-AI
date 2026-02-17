@@ -20,7 +20,7 @@ THEY GAVE TRANSFORER MODEL = HAVE LARGE MEMORY ALSO WHICH NOT THERE IN RNN + LST
 2)DECODING = PREDICT NEW WORDS - OPENAI OF ALTMAN GAVE = 2017=GPT-117 MILLION PARA  
 
 A Transformer = 
-DEF ===is a neural network architecture that understands context by looking at an entire sentence at once, rather than one word at a time.
+DEF === Neural network that reads all words at once using "attention" to understand context ( संदर्भ )
     -uses Self-Attention to look all words in sentence simultaneously & decide which  are most relevant to eachother
 
 1. The Core Innovation: "Self-Attention"
@@ -52,7 +52,9 @@ AZUREAI
 SAMNOVA
 GROQ
 
-
+# MEMORY TRICK:
+# RNN = Reads left→right (one by one) 👉 Slow, forgets
+# Transformer = Reads ALL words at once 👉 Fast, remembers everything
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
