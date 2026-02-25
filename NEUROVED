@@ -1,3 +1,98 @@
+SARANSH===
+
+# MEMORY TRICK:
+# RNN = Reads left→right (one by one) 👉 Slow, forgets
+
+# Transformer = Reads ALL words at once 👉 Fast, remembers everything
+2017 -- PAPER BY GOOGLE "ATTENTION ALL yoU NEED"
+-TRANSFORMER == 2. Key Components
+1) The Encoder: Reads the input text and converts it into a rich numerical representation (understanding the context).
+2) Positional Encoding: Since Transformers process words all at once, they don't naturally know the order of words. This adds a "time stamp" to each word so the model knows its position.
+3) The Decoder: Takes that representation and predicts the next token in the sequence (generating the response).
+4) Multi-Head Attention: This allows the model to focus on different parts of the sentence for different reasons (e.g., one "head" focuses on grammar, another on the subject-verb relationship).
+-----------------------------------
+1BN PARA = 2.5 RAM
+
+# COMMANDS 
+uv init        # Creates pyproject.toml
+uv venv        # Creates .venv
+source .venv/Scripts/activate   # Forward slashes, Scripts NOT bin!          .v / S / a
+uv add openai langchain torch transformers jupyter pandas numpy
+
+uv add package          # Install + add to pyproject.toml
+uv remove package       # Uninstall + remove from toml
+uv pip list             # List installed packages
+
+uv lock                 # Update uv.lock only
+uv tree                 # Show dependency tree
+
+from [LIBRARY_IN_NEUROVED] import [FUNCTION]
+# 1. WHERE PYTHON LOOKS FOR AI TOOLS = UR-FOLDER-NAME/.venv/lib/site-packages/
+
+Prompt= user i/p to llm to get desired o/p
+Context Window: Max tokens (input+output) LLM processes at one responce.
+Temperature == its fature that controls randomness and creativity of  LLM's output.
+T = 0-0.2 FActual   ,   0.4-1 balanced creativity  ,     1<    high creat
+Top-P (Nucleus Sampling):- selects tokens from smallest group of tokens whose total probability reaches $P$ (usually 0.9 or 0.95).
+Top-K: - Picks tokens only from top $K$ most likely words (e.g., $K=40$).
+Max Tokens: MAX number of tokens the model can generate in a single response.[Your model: max_new_tokens=512]
+gpt5 token window = 128k tokens 
+llama2 =4096 tokens 
+gemini =1 million token [have largst token no.]
+
+1 token = 4 char [char includes words , symbol@ and space]
+
+Neural Network: A brain-inspired system of nodes that learns patterns by processing data through layers.
+Process: It uses mathematical functions to adjust node connections and improve prediction accuracy.
+* Nodes: Small units that process input signals.
+* Weights/Biases: Values that determine signal importance.
+* Functions: Rules deciding if a node fires.
+* Layers: Stages where data patterns are found.
+* Training: Updating weights to reduce calculation errors.
+
+Neural Network= A brain-inspired system of nodes that LEARN PATTERNS
+      |
+TRANSFORMER = Neural network that READS ALL words at once using "ATTENTION" to understand context ( decide which  are most relevant to eachother )
+      |
+LLM: Large model built on Transformer architecture, trained on vast datasets to perform complex language understanding and generation tasks.
+
+langchain= framwork to create llm based apps (langgrapph FOR  agentic ai)
+❌ WITHOUT LangChain (have to write custom code for every model )
+
+- in messages first it runs system message then work on human message 
+-  SystemMessage =role w assign to llm -> if we give role as coding expert and ask question on heart attack [medical question] then LLM will still answer the medical question but frame it through a coding lens
+-  HumanMessage  =anything we ask to llm
+-  AIMessage : o/p
+# 1. TEMPLATE: Define the logic and variables.
+chatPromptTemplate consist of list of tuples
+chatPromptTemplate=[(),()]
+output.response_metadata = no.of tokens + other info
+# 2. CHAIN: Combine the prompt and the model using the pipe (|) operator.
+# 3. INVOKE: Send data and get the result.
+
+2.1 Zero-Shot Prompting = 0 EXAMPLE
+msg = [('system', sys_msg), ('human', human_msg)]
+template =ChatPromptTemplate(msg)
+2- one shot prompting = 1 EXAMPLE         - 2 human + 1 ai message + 1 system message fixed
+ - Human Message 1: The example input (e.g., "Apple -> Red").
+- AI Message 1: The example output (e.g., "Fruit").
+- Human Message 2: The actual request (e.g., "Carrot -> ").
+#One-shot example: Product description generation  ==SEARCH    one_shot_template Chat PromptTemplate([    BELOW GET EXAMPLE CODE WITH TO STUDY
+
+2- few shot==    giving more than 1 ex is better but it increases = 1] token     2] response time from llm
+
+4- chain of thought = Prompting technique that forces the AI to show its step-by-step reasoning before giving the final answer.  
+
+Stream lit
+- To create web app
+- to show POc (proof of Concept)
+- automatically create html in background 
+- uv add streamlit
+
+VID 11=
+Multimodal == Model that processes MULTIPLE data types simultaneously. so text + all other (image + audio + video ...).
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
 algorith  = way to learn by m/c
 
 algo+ data = ai/ml model
@@ -71,10 +166,10 @@ uv --version
 # 2. NEW PROJECT
 mkdir my-project && cd $_
 uv init        # Creates pyproject.toml
-uv venv        # Creates .venv folder
+uv venv        # Creates .venv folder add . to venv makes hidden
 
 # 3. ACTIVATE (Git Bash ONLY)
-source .venv/Scripts/activate   # Forward slashes, Scripts NOT bin!
+source .venv/Scripts/activate   # Forward slashes, Scripts NOT bin!          .v / S / a
 
 # 4. INSTALL PACKAGES (auto-saves to pyproject.toml)
 uv add openai langchain torch transformers jupyter pandas numpy
@@ -123,7 +218,8 @@ uv pip list             # List installed packages
 # uv run <file.py> -> Run script without activating venv #
 # uv lock          -> Refresh the lockfile only #
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# सारांश (SUMMARY) NO NEED TO READ BELOW ALL JUST 1 LINE OK      -- UV AND LIB AND FUNCTION MEANTING  ====from [LIBRARY_IN_NEUROVED] import [FUNCTION] 
+# सारांश (SUMMARY) NO NEED TO READ BELOW ALL JUST 1 LINE OK      -- UV AND LIB AND FUNCTION MEANTING  ====
+from [LIBRARY_IN_FOLDER] import [FUNCTION] 
 --------------------------------------------------------------------------------------------------------------
 # PROJECT CONTEXT: You are working in ~/OneDrive/Desktop/NEUROVED-CODES
 
