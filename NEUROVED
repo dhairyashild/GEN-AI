@@ -7,26 +7,29 @@ SARANSH===
 2017 -- PAPER BY GOOGLE "ATTENTION ALL yoU NEED"
 -TRANSFORMER == 2. Key Components
 1) The Encoder: Reads the input text and converts it into a rich numerical representation (understanding the context).
-2) Positional Encoding: Since Transformers process words all at once, they don't naturally know the order of words. This adds a "time stamp" to each word so the model knows its position.
-3) The Decoder: Takes that representation and predicts the next token in the sequence (generating the response).
-4) Multi-Head Attention: This allows the model to focus on different parts of the sentence for different reasons (e.g., one "head" focuses on grammar, another on the subject-verb relationship).
+2) Positional Encoding: Since Transformers process words all at once, they don't naturally know the order of words. 
+   This adds a "time stamp" to each word so the model knows its position.
+3) The Decoder: Takes numerical representation and predicts next token in the sequence (generating the response).
+4) Multi-Head Attention: This allows the model to focus on different parts of sentence for different reasons 
+   (e.g., one "head" focuses on grammar, another on the subject-verb relationship).
 -----------------------------------
 1BN PARA = 2.5 RAM
 
 # COMMANDS 
-uv init        # Creates pyproject.toml
-uv venv        # Creates .venv
-source .venv/Scripts/activate   # Forward slashes, Scripts NOT bin!          .v / S / a
-uv add openai langchain torch transformers jupyter pandas numpy
+uv init        # Creates pyproject.toml file with basic metadata like name, version, and Python requirements.
+uv venv        # Creates .venv  --> if not given then Different projects fight over package versions(e.g Project A needs Django 4.0,Project B-5.0  → crashes).
+source .venv/Scripts/activate   # Forward slashes, Scripts NOT bin!   .v / S / a    activates the virtual env on Windows    shows (.venv)
+uv add openai langchain torch transformers 
+1=Downloads/installs to .venv. + 2= Adds to [dependencies] in pyproject.toml. 3= Creates/updates uv.lock 
 
-uv add package          # Install + add to pyproject.toml
+uv add package          # Install + add to pyproject.toml 
 uv remove package       # Uninstall + remove from toml
 uv pip list             # List installed packages
 
 uv lock                 # Update uv.lock only
 uv tree                 # Show dependency tree
 
-from [LIBRARY_IN_NEUROVED] import [FUNCTION]
+from [LIBRARY_IN_NEUROVED_my_foldername] import [FUNCTION]
 # 1. WHERE PYTHON LOOKS FOR AI TOOLS = UR-FOLDER-NAME/.venv/lib/site-packages/
 
 Prompt= user i/p to llm to get desired o/p
