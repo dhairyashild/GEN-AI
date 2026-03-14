@@ -93,7 +93,7 @@ template =ChatPromptTemplate(msg)
 
 2- few shot==    giving more than 1 ex is better but it increases = 1] token     2] response time from llm
 
-4- chain of thought = Prompting technique that forces the AI to show its step-by-step reasoning before giving the final answer.  
+4- chain of thought = Prompting technique that makes AI to show its step-by-step REASONING before giving the final answer.  
 
 Stream lit
 - To create web app
@@ -102,12 +102,14 @@ Stream lit
 - uv add streamlit
 
 VID 11=
-Multimodal == Model that processes MULTIPLE data types simultaneously. so text + all other (image + audio + video ...).
-
+Multimodal == Model that processes MULTIPLE DATA TYPES simultaneously. so text + all other (image + audio + video ...).
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 algorith  = way to learn by m/c
 
-algo+ data = ai/ml model
+algo + data = ai/ml model
 
 ML 1950== ML
 PREDICTION  === 500 FEET SPACE WHAT PRICE BY LINE ON CHART
@@ -151,7 +153,7 @@ MISTRAL -- MISTRAL
 2025- DEEPSEEK
 
 -SO APROX 1 BILLION PARA NEED 2.5 GB RAM GPU  ,  1BN PARA = 2.5 RAM
-SO 600 GB MODEL NEED 1500 GB RAM IMPOSIBLE FOR NORMAL PEOPLE
+SO 600 BN MODEL NEED 1500 GB RAM IMPOSIBLE FOR NORMAL PEOPLE
 
 SO API CAME = API OF LLM HOSTED BY LARGE COMPANY WHO HAVE INFRA LIKE=
 AWS -BEDROCK
