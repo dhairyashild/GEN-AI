@@ -6,11 +6,11 @@ SARANSH===
 # Transformer = Reads ALL words at once 👉 Fast, remembers everything
 2017 -- PAPER BY GOOGLE "ATTENTION ALL yoU NEED"
 -TRANSFORMER == 2. Key Components
-1) The Encoder: Reads the input text and converts it into a rich numerical representation (understanding the context).
+1) The Encoder: Reads the input text and CONVERTS IT INTO a rich NUMERICAL representation (understanding the context).
 2) Positional Encoding: Since Transformers process words all at once, they don't naturally know the order of words. 
-   This adds a "time stamp" to each word so the model knows its position.
-3) The Decoder: Takes numerical representation and predicts next token in the sequence (generating the response).
-4) Multi-Head Attention: This allows the model to focus on different parts of sentence for different reasons 
+   This adds a "TIME STAMP" to each word so the model knows its WORD POSITION.
+3) The Decoder: Takes numerical representation and PREDICCTS NEXT WORD(TOKEN) in the sequence (generating the response).
+4) Multi-Head Attention: This allows the model to FOCUS ON DIFERENT PARTS OFSENTENCE for different reasons 
    (e.g., one "head" focuses on grammar, another on the subject-verb relationship).
 -----------------------------------
 1BN PARA = 2.5 RAM
@@ -34,24 +34,31 @@ from [LIBRARY_IN_NEUROVED_my_foldername] import [FUNCTION]
 
 Prompt= user i/p to llm to get desired o/p
 Context Window: Max tokens (input+output) LLM processes at one responce.
-Temperature == its fature that controls randomness and creativity of  LLM's output.
+Temperature == its feature that controls randomness and creativity of  LLM's output.
 T = 0-0.2 FActual   ,   0.4-1 balanced creativity  ,     1<    high creat
-Top-P (Nucleus Sampling):- selects tokens from smallest group of tokens whose total probability reaches $P$ (usually 0.9 or 0.95).
-Top-K: - Picks tokens only from top $K$ most likely words (e.g., $K=40$).
-Max Tokens: MAX number of tokens the model can generate in a single response.[Your model: max_new_tokens=512]
+Top-P (Nucleus Sampling):- SELECTS TOLKEN from smallest group of tokens whose total probability reaches $P$ (usually 0.9 or 0.95).
+Top-K: - SELECTS TOLKEN only from top K most likely words (e.g., $K=40$).
+Max Tokens: MAX number of tokens the model can generate in a single O/P response.[Your model: max_new_tokens=512]
 gpt5 token window = 128k tokens 
 llama2 =4096 tokens 
 gemini =1 million token [have largst token no.]
 
 1 token = 4 char [char includes words , symbol@ and space]
 
-Neural Network: A brain-inspired system of nodes that learns patterns by processing data through layers.
+Neural Network: A brain-inspired system of NODES that LEARNS PATTERNS by processing data through LAYERS.
 Process: It uses mathematical functions to adjust node connections and improve prediction accuracy.
-* Nodes: Small units that process input signals.
-* Weights/Biases: Values that determine signal importance.
-* Functions: Rules deciding if a node fires.
-* Layers: Stages where data patterns are found.
-* Training: Updating weights to reduce calculation errors.
+# --- HOW THE AI BRAIN WORKS (SIMPLE INTERVIEW TERMS) ---
+# Nodes:           Small "Thinking Spots" that handle bits of info.
+# Weights/Biases:  "Volume Knobs" deciding what is important.
+# Functions:       It turns the node ON or OFF based on the signal strength.
+# Layers:          "Stages" where data patterns are found.
+# Training:        "Practice" to fix errors by turning the knobs.
+# Process:         "Math Tuning" to make the AI's guesses accurate.
+
+# --- THE "INTERVIEW" GOLDEN RULE ---
+# Question: "Why use Top-P over Top-K?"
+# Answer: "Top-P is smarter because it adapts to the AI's confidence level, 
+# while Top-K is it might include bad words if K is too large, or cut off good ones if K is too small.
 
 Neural Network= A brain-inspired system of nodes that LEARN PATTERNS
       |
@@ -59,13 +66,15 @@ TRANSFORMER = Neural network that READS ALL words at once using "ATTENTION" to u
       |
 LLM: Large model built on Transformer architecture, trained on vast datasets to perform complex language understanding and generation tasks.
 
-langchain= framwork to create llm based apps (langgrapph FOR  agentic ai)
+langchain= framework to create llm based apps (langrapph FOR  agentic ai)
 ❌ WITHOUT LangChain (have to write custom code for every model )
 
-- in messages first it runs system message then work on human message 
--  SystemMessage =role w assign to llm -> if we give role as coding expert and ask question on heart attack [medical question] then LLM will still answer the medical question but frame it through a coding lens
--  HumanMessage  =anything we ask to llm
--  AIMessage : o/p
+- in messages first it runs SYSTEM MSG then ---> HUMAN message 
+1-  SystemMessage =role we assign to llm -> 
+if we give role as coding expert& ask question on heart attack[medical Q] then LLM will answer the medical question but frame it by coding lens
+2-  HumanMessage  =anything we QUESTION TO LLM
+3-  AIMessage : ALL O/P GIVEN BY LLM
+
 # 1. TEMPLATE: Define the logic and variables.
 chatPromptTemplate consist of list of tuples
 chatPromptTemplate=[(),()]
