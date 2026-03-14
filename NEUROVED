@@ -245,14 +245,43 @@ from transformers import pipeline # Go to 'NEUROVED-CODES/.venv/...' and grab th
 ---------------------------------------------------------------------------------------------------------------------------------------------
 Context Window: Max tokens (input+output) LLM processes at one responce.
 Temperature == its fature that controls randomness and creativity of  LLM's output.: 0.0 = deterministic, 2.0 = highly creative. [Your Llama model uses 0.7]
-Top-P (Nucleus Sampling):- selects tokens from the smallest group of tokens whose total probability reaches $P$ (usually 0.9 or 0.95).
-                         - Filters out "long-tail" low-probability junk while keeping diverse, high-quality options.
-                         - Impact: High $P$ (0.9) adds creative variety; low $P$ (0.1) forces safe, logical responses.
-Top-K: - Picks tokens only from top $K$ most likely words (e.g., $K=40$).
-       - Fixed Pool: Unlike Top-P, it uses a static number (e.g., $K=40$) regardless of how high or low the probabilities are.
-       - Impact: Lowering $K$ makes the AI more predictable; increasing $K$ adds randomness and variety.
+Top-P (Nucleus Sampling):
+- selects tokens from smallest group of tokens whose total probability reaches $P$ (usually 0.9 or 0.95).
+"""
+1. WHOLE ANSWER? NO. Every single word is a new calculation.
+2. THE 90% RULE: Ranks words and picks the SMALLEST set that totals 0.90 probability.
+3. THE CUTOFF: Deletes the bottom 10% (junk words) instantly.
+4. THE CHOICE: Randomly picks one word from that "90% club."
 
-Max Tokens: MAX number of tokens the model can generate in a single response.[Your model: max_new_tokens=512]
+PROMPT: "Who is the PM of India?"
+STEP 1: Calc Word 1 -> "The" (80%) + "Prime" (10%) = 90%. Pick "The".
+STEP 2: Calc Word 2 -> "The" + "Prime" (98%). Pick "Prime".
+STEP 3: Repeat until "Narendra Modi" is finished.
+
+# --- CONCEPTUAL LOGIC ---
+words = ["Narendra", "Shri", "Modi", "Rahul", "Manmohan"]
+probs = [0.85, 0.04, 0.02, 0.01, 0.005] # Probability votes
+top_p = 0.90
+----------------
+Top-K: 
+- Picks tokens only from top $K$ most likely words (e.g., $K=40$).
+- Fixed Pool: Unlike Top-P, it uses a static number (e.g., $K=40$) regardless of how high or low the probabilities are.
+- Impact: Lowering $K$ makes the AI more predictable; increasing $K$ adds randomness and variety.
+"""
+1. WHOLE ANSWER? NO. Like Top-P, it runs for every single word.
+2. THE "K" RULE: It picks the top 'K' number of words (e.g., K=3).
+3. THE CUTOFF: It ignores word #4, #5, etc., no matter how good they are.
+4. THE CHOICE: It randomly picks one word from those "K" winners.
+
+PROMPT: "Who is the PM of India?" (Let's say K=2)
+STEP 1: Calc Word 1 -> "The" (80%), "Prime" (10%), "Narendra" (6%). 
+        K=2 means only "The" and "Prime" are kept. Pick "The".
+STEP 2: Calc Word 2 -> "The" + "Prime" (98%), "Current" (1%). 
+        K=2 means only "Prime" and "Current" are kept. Pick "Prime".
+"""
+----------------
+Max Tokens: MAX number of tokens the model can generate in a single O/P response.
+[Your model: max_new_tokens=512]
 
 gpt 3.5 = 4096 tokens 
 gpt5 token window = 128k tokens 
