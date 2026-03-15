@@ -375,8 +375,7 @@ print(response.content)
 -  SystemMessage =role w assign to llm -> if we give role as coding expert and ask question on heart attack [medical question] then LLM will still answer the medical question but frame it through a coding lens
 -  HumanMessage  =anything we ask to llm
 -  AIMessage : o/p
-Primary: Stores AI model responses in conversation history
-Secondary: Can be used in few-shot examples (with example=True)
+
 ("system","act as helpful assistant and translate {ip_language} into {op_language}" ),      ## REMEMBER   (   "system" , "           "  )   OR  SystemMessagePromptTemplate.from_template("act as helpful assistant...")  ==BOTH WORKS SAME
 ("user","{text}")                                                                           ## REMEMBER   (   "user"   , "           "  )   OR  HumanMessagePromptTemplate.from_template("act as helpful assistant...")   ==BOTH WORKS SAME
 ])
@@ -402,7 +401,7 @@ output = chain.invoke({                   # chain.invoke la format lagat nahi ->
     "output_language": "Odia", 
     "input": "I love programming"
 })
-print(output.content) # Result: ମୁଁ ପ୍ରୋଗ୍ରାମିଂକୁ ଭଲ ପାଏ |
+print(output.content)                        # Result: ମୁଁ ପ୍ରୋଗ୍ରାମିଂକୁ ଭଲ ପାଏ |
 
 transaction list example :
 
@@ -410,13 +409,30 @@ first give ur basic promt and ask gpt to refine ur prompt because o/p depends on
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------- lecture 7 ------------------------------------------------------
-chatPromptTemplate consist of list of tuples
+chatPromptTemplate consist of ==== list of tuples
 chatPromptTemplate=[(),()]
 output.response_metadata = no.of tokens + other info
 
 - SystemMessage =role w assign to llm -> if we give role as coding expert and ask question on heart attack [medical question] then LLM will still answer the medical question but frame it through a coding lens
 - chain.invoke("Tata")
 - chain.invoke("stock":"Tata")
+------------------------------------------------------ LECTURE 21 FORM NEW VOEEO ON SAME MESSAGES TOPIC LIKE ABOVE LECTURE 7 ON MEESAGE IN OLD NEUROVED
+
+# StrOutputParser SUMMARY - Production Standard ==REMMEBER ONLY REMOVES .contnt
+          Extracts .content from AIMessage → returns clean string (no .content needed)
+
+# Without parser → response.content
+response = model.invoke(prompt)  # AIMessage object
+print(response.content)  # Manual
+
+#✅ With StrOutputParser → direct string
+chain = prompt | model | StrOutputParser()
+response = chain.invoke(input)  # Clean string
+print(response)  # No .content needed 
+
+# WITHOUT parser: response.content (messy)
+# WITH parser: result (clean string, prod-ready)
+
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------- lecture 8 ------------------------------------------------------
 -  if u dont give human message and system mssage and ai message then use
