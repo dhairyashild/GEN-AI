@@ -1,4 +1,7 @@
-4) ChatPromptTemplate ===for multiple conversation    ==THIS IS PROD WAY (UPDATED LCEL STANDARD) #
+########################  MESSAEGES   ########################################################################
+
+
+ChatPromptTemplate ===for multiple conversation    ==THIS IS PROD WAY (UPDATED LCEL STANDARD) #
 
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder #CHANGED: Added MessagesPlaceholder
 from langchain_core.output_parsers import StrOutputParser #CHANGED: Added parser import
