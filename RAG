@@ -92,74 +92,132 @@ print(docs[0].page_content) # Access page 1 text #
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------
+###### PROD-ESSENTIAL LOADERS (Import These Only) ######
+
 from langchain_community.document_loaders import (
-    PyMuPDFLoader, 
-    DirectoryLoader, 
-    WebBaseLoader, 
-    S3DirectoryLoader, 
-    GCSDirectoryLoader, 
-    TextLoader,
-    AzureBlobStorageContainerLoader,
-    ConfluenceLoader
+    PyMuPDFLoader, DirectoryLoader, S3DirectoryLoader, GCSDirectoryLoader  # PROD KING
 )
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-# 1. HIGH-SPEED LOCAL PDF (PyMuPDF is the industry standard for speed)
-loader_pdf = PyMuPDFLoader("manual.pdf")
-docs_pdf = loader_pdf.load()
+# 1️⃣ LOCAL FOLDERS (90% use cases)
+docs1 = DirectoryLoader("./data", glob="**/*", loader_cls=PyMuPDFLoader).load()
 
-# 2. MULTI-THREADED DIRECTORY LOAD (Essential for large local datasets)
-# use_multithreading=True significantly cuts down ingestion time in PROD
-loader_dir = DirectoryLoader(
-    "./knowledge_base", 
-    glob="**/*.pdf", 
-    loader_cls=PyMuPDFLoader,
-    use_multithreading=True,
-    show_progress=True
+# 2️⃣ AWS S3 BUCKET (Cloud #1)
+docs2 = S3DirectoryLoader("prod-bucket", "docs/").load()
+
+# 3️⃣ GOOGLE CLOUD (Cloud #2)
+docs3 = GCSDirectoryLoader("prod-project", "prod-bucket", "docs/").load()
+
+# 4️⃣ SINGLE PDF (PyMuPDF = Fastest)
+docs4 = PyMuPDFLoader("important.pdf").load()
+
+# SPLIT
+splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+all_docs = splitter.split_documents(docs1 + docs2 + docs3 + docs4)
+
+###### OTHERS (Knowledge Only - Skip in Prod) ######
+# WebBaseLoader, TextLoader, S3FileLoader, GCSFileLoader = Single use, slow
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------
+###### PROD-ESSENTIAL + S3/FireCrawl/PyMuPDF (Site Examples + Chunking) ######
+
+from langchain_community.document_loaders import (
+    PyMuPDFLoader, DirectoryLoader, S3DirectoryLoader, GCSDirectoryLoader, FireCrawlLoader
 )
-docs_dir = loader_dir.load()
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-# 3. CLOUD STORAGE: AWS S3 (Requires boto3)
-# Best practice: Use prefixes to limit scan range
-loader_s3 = S3DirectoryLoader("prod-bucket", prefix="documents/")
-docs_s3 = loader_s3.load()
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=50)
 
-# 4. CLOUD STORAGE: GOOGLE CLOUD (Requires google-cloud-storage)
-loader_gcs = GCSDirectoryLoader(project_name="ai-project", bucket="legal-docs")
-docs_gcs = loader_gcs.load()
+# 1️⃣ S3 DIRECTORY (AWS Docs) → LOAD → SPLIT
+s3_docs = S3DirectoryLoader("testing-hwc", prefix="docs/").load()  # pip install boto3
+s3_chunks = text_splitter.split_documents(s3_docs)
 
-# 5. CLOUD STORAGE: AZURE BLOB (Requires azure-storage-blob)
-loader_azure = AzureBlobStorageContainerLoader(conn_str="AZURE_CONN_STR", container="data")
-docs_azure = loader_azure.load()
+# 2️⃣ S3 w/ CREDENTIALS (AWS Docs)
+s3_creds_docs = S3DirectoryLoader(
+    "testing-hwc", 
+    prefix="fake/",
+    aws_access_key_id="xxxx", 
+    aws_secret_access_key="yyyy"
+).load()
+s3_creds_chunks = text_splitter.split_documents(s3_creds_docs)
 
-# 6. WEB SCRAPING (With User-Agent to avoid 403 Forbidden errors)
-loader_web = WebBaseLoader(
-    "https://docs.example.com",
-    header_template={"User-Agent": "Mozilla/5.0"} 
+# 3️⃣ PYMuPDF (Site Example) → LOAD → SPLIT
+pdf_docs = PyMuPDFLoader("./example_data/layout-parser-paper.pdf").load()
+pdf_chunks = text_splitter.split_documents(pdf_docs)
+
+# 4️⃣ FIRECRAWL SCRAPE (Site Docs)
+fire_docs = FireCrawlLoader(
+    api_key="YOUR_API_KEY", 
+    url="https://firecrawl.dev", 
+    mode="scrape"  # or "crawl", "map"
+).load()
+fire_chunks = text_splitter.split_documents(fire_docs)
+
+# 5️⃣ FIRECRAWL LAZY LOAD (Production - Large Sites)
+pages = []
+loader = FireCrawlLoader(api_key="YOUR_API_KEY", url="https://firecrawl.dev", mode="crawl")
+for doc in loader.lazy_load():
+    pages.append(doc)
+    if len(pages) >= 10:  # Batch upsert to vector store
+        pages_chunks = text_splitter.split_documents(pages)
+        # vectorstore.add_documents(pages_chunks)
+        pages = []
+
+# ALL READY
+all_chunks = s3_chunks + pdf_chunks + fire_chunks + pages_chunks
+=================================================================================================================================================
+
+
+
+CHUNKING/ TEXT SPLITING NOTES 
+-- LECTURE 28: Text Chunking & Splitters - Master Document Segmentation for RAG
+-- Text Splitters and Chunking in LangChain | LangChain Tutorial | Python AI RAG | Video 12  - AI WITH NOOR THEORY NOTES BELOW 
+
+# TEXT SPLITTING - AI INTERN INTERVIEW (COMPLETE 1 BLOCK)
+
+## WHY? LLM limits(4k-128k), RAG precision↑, context↓hallucination, speed↑
+## PROD: RecursiveCharacterTextSplitter(1000,150,add_start_index=True) ⭐
+
+from langchain_text_splitters import (
+    RecursiveCharacterTextSplitter, CharacterTextSplitter, TokenTextSplitter, 
+    MarkdownTextSplitter, PythonCodeTextSplitter, Language
 )
-docs_web = loader_web.load()
 
-# 7. ENTERPRISE SAAS: CONFLUENCE (Common in Corporate RAG)
-loader_conf = ConfluenceLoader(url="https://yoursite.atlassian.net", space_key="TECH")
-docs_conf = loader_conf.load()
-
-# 8. PLAIN TEXT (Explicit encoding prevents crashes on special characters)
-loader_txt = TextLoader("logs.txt", encoding="utf-8")
-docs_txt = loader_txt.load()
-
-# UNIFIED PROCESSING
-all_docs = docs_pdf + docs_dir + docs_s3 + docs_gcs + docs_azure + docs_web + docs_conf + docs_txt
-
-# PRODUCTION SPLITTING STRATEGY
-# 1000/200 is the 'Goldilocks' zone for most LLM context windows
-splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1000, 
-    chunk_overlap=200,
-    add_start_index=True # Helpful for referencing source location
+# 1️⃣ RECURSIVE (95% RAG) - Para→Sentence→Word # ← BOTH WAYS HERE!
+# WAY 1: POSITIONAL (SHORT) - CHANGE 1st=size, 2nd=overlap
+r1 = RecursiveCharacterTextSplitter(1000,150,add_start_index=True)  # # ← 1000=size,150=overlap
+# WAY 2: NAMED (EXPLICIT)
+r2 = RecursiveCharacterTextSplitter(
+    chunk_size=1000,      # # ← CHANGE chunk_size HERE
+    chunk_overlap=150,    # # ← CHANGE chunk_overlap HERE
+    add_start_index=True
 )
-final_chunks = splitter.split_documents(all_docs)
-                                   ----------------------------------------------------------------------------------------------------------------------------------------------------
-                                   ----------------------------------------------------------------------------------------------------------------------------------------------------
+chunks = r1.split_text(document)  # Articles/PDFs ✅
 
+# 2️⃣ CHARACTER from_tiktoken (Token-accurate)
+c = CharacterTextSplitter.from_tiktoken_encoder("cl100k_base",1000,150)
 
-                                   
+# 3️⃣ TOKEN (LLM Native)
+t = TokenTextSplitter(300,50,encoding_name="cl100k_base")
+
+# 4️⃣ MARKDOWN (Structure)
+m = MarkdownTextSplitter(1000,100)  # Headers # ##
+
+# 5️⃣ PYTHON CODE
+p = PythonCodeTextSplitter.from_language(Language.PYTHON,1000,100)
+
+## EXTRA PROD NOTES:
+# ✅ Length-based: Recursive(1000,150) + Token(cl100k_base)
+# ✅ Structure-based: Markdown/Code splitters preserve logic
+# ✅ add_start_index=True → UI citations
+# ✅ 1000chars≈250tokens → GPT-4o(128k) fits 500 chunks
+# # TO CHANGE: 1st #=1000→2000(size), 2nd #=150→200(overlap)
+
+## INTERVIEW:
+Q: Best RAG? → "Recursive(1000,150) - semantic hierarchy"  
+Q: Token vs Char? → "Token(cl100k_base) = exact GPT limits"  
+Q: Why Recursive? → "Tries \n\n→\n→.→space hierarchy"
+=================================================================================================================================================
+=================================================================================================================================================
+                                  
