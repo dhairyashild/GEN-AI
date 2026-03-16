@@ -1,0 +1,165 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------             VIDEO 12  = RAG INTRO               ----------------------------------------------------------------------------------------------------------------------------------------------
+# LLM LIMITATIONS → RAG SOLVES ✅
+# 1. HIGH GPU TRAINING COST → NO TRAINING NEEDED! Just retrieve
+# 2. STATIC KNOWLEDGE → FETCH LIVE/CURRENT DATA from vector DB
+# 3. SMALL CONTEXT WINDOW → ONLY RELEVANT chunks injected
+# 4. HIGH COST (prompt stuffing) → CHEAPER, fewer tokens
+# 5. HALLUCINATIONS → GROUNDED in retrieved facts
+# 6. PRIVATE DATA → SECURE, don't fine-tune on sensitive data
+
+-- RAG DIAGRAM EXPLAINED
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------                  video 13          -----------------------------------------------------------------------------
+RAG STEPS===
+
+1- DOCUMENT LOADER 
+WRAPPPER IS LIBRARY GIVEN BY LANGCHAIN SO COMMOM COE TO LOAD ALL DOCS WITH LANG
+DOCUMENT( .page_contnet,
+           .metadata,
+           "ID (OPTIONAL)" )
+
+
+
+######################################################################
+- HOW TO EGT CODE FOR DOCS LOADING=== LANGCHAIN----> PYTHON --- RETRIEVAL ----  DOCUMENT LOADER
+
+-- 1= LOAD PDF          ===  link below
+https://docs.langchain.com/oss/python/integrations/document_loaders/pypdfloader
+1- installation command to get lib    - website gave pip install pymupdf but it install in global env so use uv add pymupdf  
+2- initialization code to get below code
+
+from langchain_community.document_loaders import PyPDFLoader
+# Your existing code below
+file_path = "C:/Users/dhair/OneDrive/Desktop/NEUROVED-CODES/shubhamlondhe_ansible_notes.pdf"    # my pc PATH MUST WITH /    NOT \
+loader = PyPDFLoader(file_path)
+# 2. Extract Data
+docs = loader.load() # Execute loading into memory
+#   BELOW MY COMMANDS TO GET INF
+len(docs)   # WHEN WE LOAD PDF TO LANGCHAI CODE THEN IT CREATES DOCS NUMBER = NO. OF PAGES IN PDF 
+docs[0]
+# 3. Access Content
+print(docs[0].page_content) # Print first page text
+print(docs[0].metadata) # Print file source and page number
+print(docs)
+######################################################################
+# LOAD WEB SCRAPING --- 1ST 3 LINES FOR PYDANTIC WARNING IF NOT IVE ITS OK.
+import os, warnings                                                           ### MY CODE = 3#
+# MUST BE AT TOP: Hides the Python 3.14 / Pydantic V1 warning #
+warnings.filterwarnings("ignore")                                             ###                              
+
+# MUST BE BEFORE LOADER: Identifies you to the website to prevent being blocked #  
+os.environ["USER_AGENT"] = "Mozilla/5.0"         ###All modern browser (including Chrome) uses "Mozilla" in its ID string to ensure compatibility with old websites ,otherwise block them.
+
+# Import only after the warning-ignore line above is set
+from langchain_community.document_loaders import WebBaseLoader
+loader = WebBaseLoader("https://python.langchain.com/docs/introduction/")
+docs = loader.load()                                       ###  
+
+# Use print() to see results in a .py script              ###
+print(f"Total Pages: {len(docs)}")                          ###  
+print(f"Snippet: {docs[0].page_content[:150]}")                         ###  
+
+####################################   INTRVIEW POOINTS ON THIS  ##################################
+dada loading --- include cleaning (crawlAI library need for cleaning)
+ IN DOCUMENT LOADER----UNSTRUCUTRED ---FOR GETTING DFWITH IMAGE/TABLES
+AUDIO LOADING NEED TO CONVERT SPEECH TO TEXT THEN ONLY LLM CAN WORK ON IT
+LLM WE GET HUNGGINGFACE THEY NOT STOR E MY DAT BUT CHATGPT STORE MY DATA
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ PyMuPDFLoader--- SO USE THIS INSTEAD OF PYPDFLADER
+
+# --- INDUSTRY COMPARISON ---
+--------------------------------------------------------------------------
+# Feature    | PyMuPDFLoader (Pro)          | PyPDFLoader (Basic)
+--------------------------------------------------------------------------
+# Speed      | 10x Faster (C++ engine)      | Slower (Pure Python)
+# Layout     | Best (Tables/Columns)        | Poor (Scrambles columns)
+# Metadata   | Rich (Author, Title, Tags)   | Basic (Page # only)
+# Library    | pip install pymupdf          | pip install pypdf
+--------------------------------------------------------------------------
+
+# uv add  PyMuPDFLoader
+from langchain_community.document_loaders import PyMuPDFLoader
+# 1. Setup (Requires: uv add pymupdf)
+loader = PyMuPDFLoader("ansible_notes.pdf") # Identify PDF #
+# 2. Load
+docs = loader.load() # Fast extraction of text and metadata #
+# 3. Use
+print(docs[0].page_content) # Access page 1 text #
+###################################################
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+from langchain_community.document_loaders import (
+    PyMuPDFLoader, 
+    DirectoryLoader, 
+    WebBaseLoader, 
+    S3DirectoryLoader, 
+    GCSDirectoryLoader, 
+    TextLoader,
+    AzureBlobStorageContainerLoader,
+    ConfluenceLoader
+)
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+# 1. HIGH-SPEED LOCAL PDF (PyMuPDF is the industry standard for speed)
+loader_pdf = PyMuPDFLoader("manual.pdf")
+docs_pdf = loader_pdf.load()
+
+# 2. MULTI-THREADED DIRECTORY LOAD (Essential for large local datasets)
+# use_multithreading=True significantly cuts down ingestion time in PROD
+loader_dir = DirectoryLoader(
+    "./knowledge_base", 
+    glob="**/*.pdf", 
+    loader_cls=PyMuPDFLoader,
+    use_multithreading=True,
+    show_progress=True
+)
+docs_dir = loader_dir.load()
+
+# 3. CLOUD STORAGE: AWS S3 (Requires boto3)
+# Best practice: Use prefixes to limit scan range
+loader_s3 = S3DirectoryLoader("prod-bucket", prefix="documents/")
+docs_s3 = loader_s3.load()
+
+# 4. CLOUD STORAGE: GOOGLE CLOUD (Requires google-cloud-storage)
+loader_gcs = GCSDirectoryLoader(project_name="ai-project", bucket="legal-docs")
+docs_gcs = loader_gcs.load()
+
+# 5. CLOUD STORAGE: AZURE BLOB (Requires azure-storage-blob)
+loader_azure = AzureBlobStorageContainerLoader(conn_str="AZURE_CONN_STR", container="data")
+docs_azure = loader_azure.load()
+
+# 6. WEB SCRAPING (With User-Agent to avoid 403 Forbidden errors)
+loader_web = WebBaseLoader(
+    "https://docs.example.com",
+    header_template={"User-Agent": "Mozilla/5.0"} 
+)
+docs_web = loader_web.load()
+
+# 7. ENTERPRISE SAAS: CONFLUENCE (Common in Corporate RAG)
+loader_conf = ConfluenceLoader(url="https://yoursite.atlassian.net", space_key="TECH")
+docs_conf = loader_conf.load()
+
+# 8. PLAIN TEXT (Explicit encoding prevents crashes on special characters)
+loader_txt = TextLoader("logs.txt", encoding="utf-8")
+docs_txt = loader_txt.load()
+
+# UNIFIED PROCESSING
+all_docs = docs_pdf + docs_dir + docs_s3 + docs_gcs + docs_azure + docs_web + docs_conf + docs_txt
+
+# PRODUCTION SPLITTING STRATEGY
+# 1000/200 is the 'Goldilocks' zone for most LLM context windows
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000, 
+    chunk_overlap=200,
+    add_start_index=True # Helpful for referencing source location
+)
+final_chunks = splitter.split_documents(all_docs)
+                                   ----------------------------------------------------------------------------------------------------------------------------------------------------
+                                   ----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+                                   
