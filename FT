@@ -1,0 +1,19 @@
+WHEN TO USE FT OVER OTHER 
+-1 CHECK WITH RAG
+- USE PROMT ENG FOR BETTER ANS IF NOT WORKS GO FOR F
+- IF DATASET NOT CHANGES FREQUENTLY THEN ONLY GO FOR FT OR IF CHANGES GO FOR RAG
+- HOGH COST ON FT , RAG CHEPER
+
+
+
+## Fine-Tuning Dataset - PROD Complete Notes
+
+**BEST PROD FORMAT:**
+1. ChatML `{"messages":[{"role":"system/user/assistant","content":""}]}` 
+2. 1 COMPLETE JSON per line → train.jsonl
+3. System + user + assistant (multi-turn OK)
+4. TRL SFTTrainer native support
+
+{"messages":[{"role":"user","content":"Hi"},{"role":"assistant","content":"Hello"}]}
+{"messages":[{"role":"user","content":"Bye"},{"role":"assistant","content":"Bye!"}]}
+{"messages":[{"role":"user","content":"What?"},{"role":"assistant","content":"Huh?"}]}
