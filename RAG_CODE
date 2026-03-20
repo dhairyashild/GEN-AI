@@ -1,0 +1,37 @@
+# 1 DOC LOADER
+
+from langchain_community.document_loaders import PyMuPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+file_path = "C:/Users/dhair/OneDrive/Desktop/PYTHON_PRACTICE_SHREYIANS/devops_project-interview.pdf"
+loader = PyMuPDFLoader(file_path)
+docs=loader.load()
+#  CHECKING ONLY
+print(len(docs))   # -------> 42 PAGES 
+print(docs[0].page_content)
+print(docs[0].metadata)
+
+
+# 2 TEXT SPLIT
+
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+texts = text_splitter.split_text(document)         # CHANGE TO split_documents(docs)
+# Use **split_text** if you have a single raw string; 
+# use **split_documents** if you have a list of LangChain Document objects (which include metadata like page numbers).
+
+# FOR CHECKING ONLY
+print(texts[sample_index].page_content)
+print(texts[sample_index].metadata) 
+print(len(texts))  #----> 20 CHUNKS
+
+
+
+
+
+
+
+
+
+
