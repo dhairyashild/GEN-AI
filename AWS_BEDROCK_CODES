@@ -1,0 +1,67 @@
+- THIS CODE  GET FROM LANGCHIN JUST WE NEED TO CHANGE 
+1= NEW MODEL REMOVE  OLD LEGACY MODEL NAME 
+2= ADD REGION NAME IS MUST
+
+from langchain_aws import ChatBedrock
+model = ChatBedrock(model="anthropic.claude-3-5-sonnet-20240620-v1:0")
+
+-------------------------------
+from langchain_aws import ChatBedrock
+                                             # LangChain will automatically look for your 'aws configure' settings
+                                              # No os.environ needed if 'aws sts get-caller-identity' works!
+model = ChatBedrock(
+    model_id="us.amazon.nova-micro-v1:0",     # Current active model
+  region_name="us-east-1",                   # Must match your 'aws configure' region 
+                                        # IF NOT GIVEN ERROR= botocore.errorfactory.ValidationException: 
+    model_kwargs={"temperature": 0}     # IF NOT GIVEN THEN ALSO WORKS 
+)
+
+
+r = model.invoke("Who is the PM of India?")
+print(r.content)
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+- this embed code get from langchin 
+
+from langchain_aws import BedrockEmbeddings
+embeddings = BedrockEmbeddings(
+    credentials_profile_name="bedrock-admin", region_name="us-east-1"      # keep region as it is 
+                        ### replace credentials_profile_name with model_id="amazon.titan-embed-text-v2:0"
+)
+embeddings.embed_query("This is a content of the document")   ### give var name to this as vector
+--------------------------------------
+from langchain_aws import BedrockEmbeddings
+                                  # Professional Standard: No keys, no profiles, just the Model & Region
+                                              # This uses 'Instance Profiles' or 'Task Roles' in the cloud
+embeddings = BedrockEmbeddings(
+    model_id="amazon.titan-embed-text-v2:0",      # Specifies the exact embedding engine
+    region_name="us-east-1"                        # Points to the data center location
+)
+# Execution
+vector = embeddings.embed_query("Real-time AI Engineering content")          # Converts text to math
+print(f"Vector dimensions: {len(vector)}")                               # Verifies the output size
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+  Q    WHEN TO USE 
+1- embed_documents(FOR LARGE DATA WE GAVE )
+2- embed_query(FOR USER I/P)
+
+### 2. USE CASE: embed_documents=== Use this for the "Knowledge Base" (PDFs, Databases, Text files)
+                                     # Optimized for processing large batches of text at once.
+library_vectors = embeddings.embed_documents([
+    "Cloud computing allows on-demand access to resources.",
+    "AWS Bedrock is a managed service for foundation models."
+])
+
+### 3. USE CASE: embed_query === Use this for the "User Question" (The search bar input)
+                            # Optimized for short, single strings to find the best match in the library.
+user_vector = embeddings.embed_query("What is AWS Bedrock?")
+
+# 4. Result Check
+print(f"# Docs Batch Size: {len(library_vectors)}")
+print(f"# Query Dimension: {len(user_vector)}")
+-------------------------------------------------------------------
