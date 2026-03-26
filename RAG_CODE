@@ -1,21 +1,31 @@
-# LlamaIndex dataset (RAG-ready, clean text)
-git clone https://github.com/run-llama/llama_index.git
-cd llama_index/llama-datasets/datasets/paul_graham_essay
-
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_aws import BedrockEmbeddings
+
 
 file_path = "./GenAI_Agentic_AI_Notes.pdf"
 loader = PyMuPDFLoader(file_path)
-docs= loader.load()                                 ### docs added
+docs= loader.load()
 print(f"DOCS NUMBER= {len(docs)}")
 
 
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
-chunks = text_splitter.split_documents(docs)   ### Use split_documents instead of split_text  ### varname changed to chunks instead of text
-print(f"CHUNKS= {len(chunks)}")
+texts = text_splitter.split_documents(docs)     # Use split_documents instead of split_text
+print(f"TEXTS= {len(texts)}")
 
+chunks = [text.page_content for text in texts]
+
+
+embeddings = BedrockEmbeddings(
+    model_id="amazon.titan-embed-text-v2:0", region_name="us-east-1"
+)
+vector = embeddings.embed_documents(
+    chunks
+)
+print(f"EMBEDDINGS GENERATED: {len(vector)} vectors")
+
+print(vector[0][0:10])
 
 -----------------------------------------------------------------------------------------------------------
 # 1 DOC LOADER
