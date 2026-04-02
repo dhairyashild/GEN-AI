@@ -300,10 +300,15 @@ def rag_logic(query):
         return llm.ask(f"General knowledge answer for: {query}")
 ------------------------------------------------------------------
 
+Lecture 18: Mastering Vector Similarity Metrics - Cosine Similarity, Distance & Semantic Search
 
-
-
-
+# Cosine Similarity: Measures angle between two vectors (ignores magnitude)
+1. cos(θ) = 1 when θ=0° (vectors point same direction, max similarity)
+2. cos(θ) = 0 when θ=90° (vectors perpendicular, no similarity) 
+3. cos(θ) = -1 when θ=180° (vectors exactly opposite, perfect dissimilarity)
+   Ex: "hot:cold", "buy:sell", "happy:sad", "big:small", "win:lose"
+4. Formula: cos(θ) = (dot product of A,B) / (magnitude A × magnitude B), range [-1,1]
+5. Key: Only direction matters, not length (unlike dot product alone)
 
 
 
