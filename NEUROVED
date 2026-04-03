@@ -1,15 +1,18 @@
 SARANSH===
 
 # MEMORY TRICK:
-# RNN = Reads left→right (one by one) 👉 Slow, forgets
+# RNN (Recurrent Neural Network)= Reads left→right (one by one) 👉 Slow, forgets
 
 # Transformer = Reads ALL words at once 👉 Fast, remembers everything
 2017 -- PAPER BY GOOGLE "ATTENTION ALL yoU NEED"
 -TRANSFORMER == 2. Key Components
-1) The Encoder: Reads the input text and CONVERTS IT INTO a rich NUMERICAL representation (understanding the context).
-2) Positional Encoding: Since Transformers process words all at once, they don't naturally know the order of words. 
+1) The Encoder: Reads the input text and CONVERTS IT INTO a rich NUMERICAL representation
+                (understanding the context).
+2) Positional Encoding: Since Transformers process words all at once, they don't naturally know 
+                       order of words. 
    This adds a "TIME STAMP" to each word so the model knows its WORD POSITION.
-3) The Decoder: Takes numerical representation and PREDICCTS NEXT WORD(TOKEN) in the sequence (generating the response).
+3) The Decoder: Takes numerical representation and PREDICCTS NEXT WORD(TOKEN) in the sequence
+(generating the response).
 4) Multi-Head Attention: This allows the model to FOCUS ON DIFERENT PARTS OFSENTENCE for different reasons 
    (e.g., one "head" focuses on grammar, another on the subject-verb relationship).
 -----------------------------------
@@ -18,7 +21,7 @@ SARANSH===
 # COMMANDS 
 uv init        # Creates pyproject.toml file with basic metadata like name, version, and Python requirements.
 uv venv        # Creates .venv  --> if not given then Different projects fight over package versions(e.g Project A needs Django 4.0,Project B-5.0  → crashes).
-source .venv/Scripts/activate   # Forward slashes, Scripts NOT bin!   .v / S / a    activates the virtual env on Windows    shows (.venv)
+source .venv/Scripts/activate   # Scripts NOT bin!   .v / S / a    activates virtual env on Windows   shows (.venv)
 uv add openai langchain torch transformers 
 1=Downloads/installs to .venv. + 2= Adds to [dependencies] in pyproject.toml. 3= Creates/updates uv.lock 
 
@@ -33,12 +36,12 @@ from [LIBRARY_IN_NEUROVED_my_foldername] import [FUNCTION]
 # 1. WHERE PYTHON LOOKS FOR AI TOOLS = UR-FOLDER-NAME/.venv/lib/site-packages/
 
 Prompt= user i/p to llm to get desired o/p
+Max Tokens: MAX number of tokens the model can generate in a single O/P response.[Your model: max_new_tokens=512] = Total Context Window - Prompt
 Context Window: Max tokens (input+output) LLM processes at one responce.
 Temperature == its feature that controls randomness and creativity of  LLM's output.
 T = 0-0.2 FActual   ,   0.4-1 balanced creativity  ,     1<    high creat
 Top-P (Nucleus Sampling):- SELECTS TOLKEN from smallest group of tokens whose total probability reaches $P$ (usually 0.9 or 0.95).
 Top-K: - SELECTS TOLKEN only from top K most likely words (e.g., $K=40$).
-Max Tokens: MAX number of tokens the model can generate in a single O/P response.[Your model: max_new_tokens=512]
 gpt5 token window = 128k tokens 
 llama2 =4096 tokens 
 gemini =1 million token [have largst token no.]
@@ -48,21 +51,43 @@ gemini =1 million token [have largst token no.]
 Neural Network: A brain-inspired system of NODES that LEARNS PATTERNS by processing data through LAYERS.
 Process: It uses mathematical functions to adjust node connections and improve prediction accuracy.
 # --- HOW THE AI BRAIN WORKS (SIMPLE INTERVIEW TERMS) ---
-# Nodes:           Small "Thinking Spots" that handle bits of info.
-# Weights/Biases:  "Volume Knobs" deciding what is important.
-# Functions:       It turns the node ON or OFF based on the signal strength.
-# Layers:          "Stages" where data patterns are found.
-# Training:        "Practice" to fix errors by turning the knobs.
-# Process:         "Math Tuning" to make the AI's guesses accurate.
+# - Nodes: Small "Thinking Spots" that handle bits of info.
+# - Weights ($w$): Learnable parameters that determine the strength of connection between neurons.
+# - Biases ($b$):Constant values added to weighted sum to allow activation function to shift left/right.
+# - Forward Propagation:The process where input data travels in network layers to produce o/p prediction.
+# - Backpropagation:Algorithm that calculates gradient of error with respect to weights using Chain Rule.
+# - Gradient Descent: An optimization algorithm used to minimize the loss 
+   function by iteratively updating weights.
+# - Learning Rate ($\\alpha$):hyperparameter that controls size of steps taken during weight updates.
+# - Activation Function: A non-linear function (e.g., ReLU, Sigmoid) that 
+   decides if a neuron should "fire."
+# - Loss Function: A mathematical formula (e.g., MSE, Cross-Entropy) that 
+  measures the difference between Predicted and Actual values.
+# - Epoch: One complete pass of the entire training dataset through the neural network.
+# - Overfitting:When model learns noise in training data too well,causing poor performance on new data.
+
+# MUST KNOW:
+# - Chain Rule: The mathematical backbone of backpropagation.
+
+# MISTAKES TO AVOID:
+# - Vanishing Gradients: When weights stop updating because gradients become 
+#   too small (common in deep networks with Sigmoid).
+# - High Learning Rate: Can cause the model to overshoot the minimum and 
+#   never converge.
+
+# --- SECTION 2: ARCHITECTURE & DIAGRAM ---
+
+# [Input x] --(Weight w)--> [Summation \\Sigma + Bias b] --> [Activation f] --> [Output y]
+#        <--- (Error Signal) --- [Backpropagation] <--- (Compare y to Actual)
 
 # --- THE "INTERVIEW" GOLDEN RULE ---
 # Question: "Why use Top-P over Top-K?"
-# Answer: "Top-P is smarter because it adapts to the AI's confidence level, 
-# while Top-K is it might include bad words if K is too large, or cut off good ones if K is too small.
+# Answer: "Top-P is smarter because it adapts to the AI's confidence level + 
+ while Top-K is it might include bad words if K is too large, or cut off good ones if K is too small.
 
-Neural Network= A brain-inspired system of nodes that LEARN PATTERNS
+Neural Network= A brain-inspired SYSTEM OF NODES that LEARN PATTERNS
       |
-TRANSFORMER = Neural network that READS ALL words at once using "ATTENTION" to understand context ( decide which  are most relevant to eachother )
+TRANSFORMER =NeuralNetwork that READS ALL words at once using "ATTENTION" to understand context ( decide which  are most relevant to eachother )
       |
 LLM: Large model built on Transformer architecture, trained on vast datasets to perform complex language understanding and generation tasks.
 
