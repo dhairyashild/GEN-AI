@@ -791,7 +791,14 @@ print(docs[0].page_content) # Access page 1 text #
 # ============================================
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+L39-1— Classical NLP | Corpus, Vocab, Tokenization, Bag of Words, Stemming & Lemmatization
+# TYPES OF NLP  ---
+- Classical NLP: Focused on syntax and structure using manual features like Lemmatization and Bag-of-Words.
+- Modern NLP: Focused on semantics and context using Transformers and Self-Attention mechanisms.
+-CORPUS = COLLECTON OF DOCS(TEXT EXAMPLE)
+-DOCUMENT = SINGLE STE OF DATA
+-VOCAB - LIST OF UNIT WRODS
+-TOKENIZATION = BREAKING WORD INTO SMALLER PARTS
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
