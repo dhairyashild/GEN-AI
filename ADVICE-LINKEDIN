@@ -1,0 +1,50 @@
+I spent 3 months trying to learn GenAI.
+
+I failed. Badly.
+
+Not because GenAI is hard.
+Because I skipped the foundations.
+
+I was prompt engineering before I understood probability.
+Building RAG pipelines before I knew what an embedding actually was.
+Copy-pasting LangChain code I didn't understand.
+
+It felt like building a skyscraper on sand.
+
+So I stopped. Went back to basics. And everything clicked.
+
+Here are the 10 things I wish I had learned FIRST:
+
+1️⃣ Python — Not just syntax. Data structures, OOP, NumPy, Pandas.
+
+2️⃣ Linear Algebra — Vectors & matrices ARE neural networks. Learn them.
+
+3️⃣ Calculus — Backpropagation is just the chain rule. That's it.
+
+4️⃣ Statistics & Probability — LLMs don't "think." They predict. Big difference.
+
+5️⃣ ML Fundamentals — Gradient descent, loss functions, overfitting. Non-negotiable.
+
+6️⃣ Deep Learning Basics — Neurons, layers, activation functions. The engine under the hood.
+
+7️⃣ NLP Basics — Tokenization, embeddings, sequence models. The "why" behind LLMs.
+
+8️⃣ Transformer Architecture — Self-attention is the breakthrough. Understand it deeply.
+
+9️⃣ Prompt Engineering — Talk to models intelligently before you build with them.
+
+🔟 APIs & Cloud Basics — REST, JSON, auth. Because GenAI lives in the cloud.
+
+Timeline? 3–6 months.
+Worth it? Completely.
+
+Here's the hard truth nobody tells you:
+
+Everyone wants to build the next AI startup.
+Almost nobody wants to do the boring work first.
+
+The ones who do?
+They're the ones who actually build things that last.
+
+Save this post. Start from step 1.
+And if you're already on this journey — which step are you on? 👇
