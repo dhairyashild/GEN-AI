@@ -253,11 +253,15 @@ Embeding=numerical representation of text(words/sentences/paragraphs) as vector 
 A=  0.566               B= 0.555
     0.764                  0.653
 
-- Formula:     cos(θ) = (A · B) / (||A|| * ||B||)
-- A · B = dot product of vectors A and B.
-- ||A||, ||B|| = Euclidean norms (magnitudes) of A and B.
-- Range: [-1, 1]; 1 = same direction, 0 = orthogonal, -1 = opposite.
-- Often used in NLP, embeddings, and recommendation systems.
+Formula: cosine_similarity(A, B) = (A · B) / (||A|| × ||B||).  
+Read: dot product of A and B divided by product of their lengths.  
+
+It outputs cos(θ), where θ is the angle between A and B, not θ itself.
+cos(0°)=1 (same direction / very similar), 
+cos(90°)=0 (orthogonal / unrelated), 
+cos(180°)=-1 (opposite).
+
+
 
 =OPENAI MODEL WHICH PERFORM EMBEDING==
 TEXT EMBEDIGN SMALL  - 1500 WORDS
