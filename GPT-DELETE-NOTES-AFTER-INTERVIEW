@@ -1,0 +1,23 @@
+Stemming: Rule-based chopping of word endings to get a rough root, e.g., “playing”, “played” → “play” or “play”.
+
+Lemmatization: Uses vocabulary + POS to get the correct base word (lemma), e.g., “better” → “good”, “cars” → “car”.
+
+Other short important ones:
+
+Tokenization: Splitting text into smaller units (words, subwords, characters) that the model can process.
+
+Stop words: Very common words (like “is”, “the”, “and”) often removed as they add little meaning.
+
+Bag of Words (BoW): Text representation using word counts, ignoring order and grammar.
+
+TF-IDF: Weighted BoW that downweights common words and upweights rare but informative words.
+
+Overfitting: Model learns noise/memory of training data, performs poorly on new data.
+
+Underfitting: Model too simple, performs poorly on both train and test data.
+
+Precision: Of the predicted positives, how many are actually positive.
+
+Recall: Of all actual positives, how many did the model correctly find.
+
+F1-score: Harmonic mean of precision and recall, balances both in one metric.
